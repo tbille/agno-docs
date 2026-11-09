@@ -1,0 +1,19 @@
+---
+title: Otari
+sidebarTitle: Otari
+description: "Configure Otari, Agno's model class for routing requests through an Otari LLM gateway."
+---
+
+The Otari model sends Chat Completions requests through [Otari](https://github.com/mozilla-ai/otari), an open-source, OpenAI-compatible LLM gateway.
+
+## Parameters
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | `str` | `"openai:gpt-4o"` | The model ID sent to the gateway unchanged: a `provider:model` selector, a catalog ID, or an alias |
+| `name` | `str` | `"Otari"` | The name of the model |
+| `provider` | `str` | `"Otari"` | The provider of the model |
+| `api_key` | `Optional[str]` | `None` | The Otari API key (defaults to the `OTARI_API_KEY` env var) |
+| `base_url` | `str` | `"https://api.otari.ai/api/v1"` | The gateway base URL (defaults to the `OTARI_BASE_URL` env var) |
+
+`Otari` extends [OpenAILike](/reference/models/openai-like) and accepts all of its parameters.

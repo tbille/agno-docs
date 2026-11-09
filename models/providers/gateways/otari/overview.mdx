@@ -1,0 +1,88 @@
+---
+title: Otari
+sidebarTitle: Overview
+description: Route Agno agents through Otari, Mozilla.ai's open-source OpenAI-compatible LLM gateway.
+---
+
+[Otari](https://github.com/mozilla-ai/otari) is an open-source, OpenAI-compatible LLM gateway by Mozilla.ai. It adds API keys, budgets, usage tracking, and routing in front of your model providers. Use the hosted gateway at [otari.ai](https://otari.ai) or run your own.
+
+## Authentication
+
+Create an API key on the **API keys** page of the [otari.ai](https://otari.ai) dashboard and set `OTARI_API_KEY`.
+
+<CodeGroup>
+
+```bash Mac
+export OTARI_API_KEY=***
+```
+
+```bash Windows
+setx OTARI_API_KEY ***
+```
+
+</CodeGroup>
+
+Set `OTARI_BASE_URL` when the gateway is not the default `https://api.otari.ai/api/v1`:
+
+| Gateway | `OTARI_BASE_URL` |
+| --- | --- |
+| otari.ai | Not needed |
+| otari.ai, EU region | `https://eu.api.otari.ai/api/v1` |
+| Self-hosted | Your gateway's URL plus `/api/v1`, such as `http://localhost:8000/api/v1` |
+
+## Example
+
+Install the `openai` package:
+
+```shell
+uv pip install -U agno openai
+```
+
+Use `Otari` with your `Agent`:
+
+<CodeGroup>
+
+```python agent.py
+from agno.agent import Agent
+from agno.models.otari import Otari
+
+agent = Agent(
+    model=Otari(id="openai:gpt-4o"),
+    markdown=True,
+)
+
+agent.print_response("Share a 2 sentence horror story.")
+```
+
+</CodeGroup>
+
+The string form resolves to the same class. Everything after the first `otari:` is the model ID, so `model="otari:openai:gpt-4o"` sends `openai:gpt-4o` to the gateway.
+
+## Model IDs
+
+`Otari` sends the model ID to the gateway unchanged.
+
+| Model ID | Behavior |
+| --- | --- |
+| `openai:gpt-4o`, `anthropic:claude-sonnet-4-6` | `provider:model` pins one provider |
+| `openai/gpt-4o` | Catalog ID. Otari picks the provider and falls back to another one on failure |
+| `support-agent` | An alias or routing policy configured on the gateway |
+
+## Params
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | `str` | `"openai:gpt-4o"` | The model ID sent to the gateway |
+| `name` | `str` | `"Otari"` | The name of the model |
+| `provider` | `str` | `"Otari"` | The provider of the model |
+| `api_key` | `Optional[str]` | `None` | The Otari API key (defaults to the `OTARI_API_KEY` env var) |
+| `base_url` | `str` | `"https://api.otari.ai/api/v1"` | The gateway base URL (defaults to the `OTARI_BASE_URL` env var) |
+
+`Otari` raises `ModelAuthenticationError` when no API key is set. It never falls back to `OPENAI_API_KEY`.
+
+`Otari` extends [OpenAILike](/reference/models/openai-like) and accepts all of its parameters.
+
+## Developer Resources
+
+- [Otari reference](/reference/models/otari)
+- [Otari documentation](https://github.com/mozilla-ai/otari)

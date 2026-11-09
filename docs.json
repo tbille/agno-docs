@@ -2008,6 +2008,12 @@
                             ]
                           },
                           {
+                            "group": "Otari",
+                            "pages": [
+                              "models/providers/gateways/otari/overview"
+                            ]
+                          },
+                          {
                             "group": "Portkey",
                             "pages": [
                               "models/providers/gateways/portkey/overview",
@@ -3925,6 +3931,12 @@
                             "group": "Usage",
                             "pages": []
                           }
+                        ]
+                      },
+                      {
+                        "group": "Otari",
+                        "pages": [
+                          "models/providers/gateways/otari/overview"
                         ]
                       },
                       {
@@ -8656,6 +8668,7 @@
                   "reference/models/fireworks",
                   "reference/models/openrouter",
                   "reference/models/openrouter-responses",
+                  "reference/models/otari",
                   "reference/models/sambanova",
                   "reference/models/internlm",
                   "reference/models/openai-like",
